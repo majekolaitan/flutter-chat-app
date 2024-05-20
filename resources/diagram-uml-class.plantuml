@@ -1,0 +1,107 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class ChatPage {
+    -List<ChatMessageEntity> _messages
+    +State<ChatPage> createState()
+    -_loadInitialMessages()
+    -onMessageSent(ChatMessageEntity)
+}
+
+class LoginPage {
+    -GlobalKey<FormState> _formkey
+    -loginUser(BuildContext)
+    -TextEditingController userNameController
+    -TextEditingController passwordController
+    +Widget _buildHeader(BuildContext)
+    +Widget _buildFooter()
+    +Widget _buildForm(BuildContext)
+}
+
+class ChatMessageEntity {
+    -String text
+    -String? imageUrl
+    -String id
+    -int createdAt
+    -Author author
+    +ChatMessageEntity(text, id, createdAt, imageUrl, author)
+    +factory ChatMessageEntity.fromJson(Map<String, dynamic>)
+}
+
+class Author {
+    -String userName
+    +Author(userName)
+    +factory Author.fromJson(Map<String, dynamic>)
+}
+
+class PixelfordImage {
+    -String id
+    -String filename
+    -String? title
+    -String urlFullSize
+    -String urlSmallSize
+    +PixelfordImage(title, filename, urlSmallSize, id, urlFullSize)
+    +factory PixelfordImage.fromJson(Map<String, dynamic>)
+    +Map<String, dynamic> toJson()
+}
+
+class ImageRepository {
+    +Future<List<PixelfordImage>> getNetworkImages()
+}
+
+class AuthService {
+    -static late SharedPreferences _prefs
+    +static init()
+    +Future<void> loginUser(String)
+    +Future<bool> isLoggedIn()
+    +void logoutUser()
+    +String? getUserName()
+    +void updateUserName(String)
+}
+
+class ChatBubble {
+    -ChatMessageEntity entity
+    -Alignment alignment
+    +ChatBubble(alignment, entity)
+}
+
+class ChatInput {
+    -String _selectedImageUrl
+    -TextEditingController chatMessageController
+    -onSendButtonPressed()
+    -onImagePicked(String)
+}
+
+class LoginTextField {
+    -TextEditingController controller
+    -String hintText
+    -FormFieldValidator<String>? validator
+    -bool hasAsterisks
+}
+
+class NetworkImagePickerBody {
+    -Function(String) onImageSelected
+    -ImageRepository _imageRepo
+}
+
+AuthService ..> SharedPreferences
+
+ChatPage *-- ChatMessageEntity
+ChatPage ..> AuthService
+ChatPage o-- ChatBubble
+ChatPage o-- ChatInput
+
+LoginPage ..> AuthService
+LoginPage o-- LoginTextField
+
+ChatMessageEntity *-- Author
+
+ChatInput ..> AuthService
+ChatInput ..> NetworkImagePickerBody
+
+NetworkImagePickerBody ..> ImageRepository
+NetworkImagePickerBody ..> PixelfordImage
+
+ImageRepository ..> PixelfordImage
+
+@enduml

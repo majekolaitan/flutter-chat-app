@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+[Flutter App] as FlutterApp
+
+node "Flutter Widgets" {
+  [ChatBubble]
+  [ChatInput]
+  [LoginTextField]
+  [PickerBody]
+}
+
+node "Flutter Pages" {
+  [ChatPage]
+  [LoginPage]
+}
+
+node "Flutter Models" {
+  [ChatMessageEntity]
+  [ImageModel]
+}
+
+node "Flutter Services" {
+  [AuthService]
+}
+
+node "Flutter Repositories" {
+  [ImageRepository]
+}
+
+node "Flutter Utils" {
+  [BrandColor]
+  [Spaces]
+  [TextFieldStyles]
+}
+
+FlutterApp --> "Flutter Pages"
+"Flutter Pages" ..> "Flutter Widgets"
+"Flutter Pages" ..> "Flutter Models"
+"Flutter Pages" ..> "Flutter Services"
+"Flutter Widgets" ..> "Flutter Models"
+"Flutter Widgets" ..> "Flutter Services"
+"Flutter Widgets" ..> "Flutter Repositories"
+"Flutter Widgets" ..> "Flutter Utils"
+
+@enduml

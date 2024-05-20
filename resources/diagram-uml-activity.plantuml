@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/activity-diagram-legacy
+
+title User Authentication and Chat Flow
+
+start
+
+if (isLoggedIn()) then (true)
+  :Navigate to ChatPage;
+else (false)
+  :Navigate to LoginPage;
+endif
+
+if (User on LoginPage) then (yes)
+  :Enter username and password;
+  :Validate form fields;
+  if (Form is valid) then (true)
+    :Login user;
+    :Store username in SharedPreferences;
+    :Navigate to ChatPage;
+  else (false)
+    :Display error message;
+  endif
+else (User on ChatPage)
+  if (User wants to send message) then (yes)
+    :Type message;
+    :Add image (optional);
+    :Send message;
+    :Update chat history;
+  else (no)
+  endif
+
+  if (User wants to log out) then (yes)
+    :Log out user;
+    :Clear SharedPreferences;
+    :Navigate to LoginPage;
+  endif
+endif
+
+stop
+
+@enduml

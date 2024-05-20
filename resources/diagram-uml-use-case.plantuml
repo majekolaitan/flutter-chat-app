@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+left to right direction
+
+actor User
+
+rectangle "Chat Application" {
+  usecase "Login" as UC1
+  usecase "View Chat History" as UC2
+  usecase "Send Message" as UC3
+  usecase "Attach Image" as UC4
+  usecase "Logout" as UC5
+}
+
+User -- UC1
+UC1 ..> UC2 : includes
+UC2 ..> UC3 : includes
+UC3 ..> UC4 : includes
+UC2 ..> UC5 : includes
+
+@enduml
